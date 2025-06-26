@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTChess - The General's Gambit</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script>
+</head>
+<body>
+
+    <div id="game-container"></div>
+
+    <div class="ui-panel">
+        <h3>Mission Control</h3>
+        <div id="mission-profile-panel" style="display: none;">
+            <label for="pace">Pace:</label>
+            <select id="pace" name="pace">
+                <option value="CAUTIOUS">Cautious</option>
+                <option value="STANDARD">Standard</option>
+                <option value="FORCED_MARCH">Forced March</option>
+            </select>
+            <label for="roe">Rules of Engagement:</label>
+            <select id="roe" name="roe">
+                <option value="ENGAGE_ON_SIGHT">Engage on Sight</option>
+                <option value="HOLD_FIRE">Hold Fire</option>
+                <option value="OPPORTUNISTIC">Opportunistic</option>
+            </select>
+            <button id="set-order">Set Order</button>
+            <hr>
+        </div>
+        <button id="start-battle">START BATTLE</button>
+    </div>
+
+    <div class="ui-panel">
+        <h3>Command Cards</h3>
+        <div id="card-hand"></div>
+    </div>
+
+    <!-- Overlays -->
+    <div id="main-menu">
+        <h1>RTChess: The General's Gambit</h1>
+        <button id="start-game">Start New Game</button>
+    </div>
+    <div id="game-over" style="display: none;">
+        <h1 id="winner-message"></h1>
+        <button id="play-again">Play Again</button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/piece.js"></script>
+    <script src="js/messenger.js"></script>
+    <script src="js/cards.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
