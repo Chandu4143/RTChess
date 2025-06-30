@@ -1,22 +1,44 @@
-document.getElementById('forward-scouts').addEventListener('click', () => {
-    CARD_DEFINITIONS.forward_scouts.effect();
-});
+document.addEventListener('DOMContentLoaded', () => {
+    // Custom Select Logic
+    const customSelects = document.querySelectorAll('.custom-select');
 
-document.getElementById('set-order').addEventListener('click', () => {
-    if (selectedPiece) {
-        let king = boardState.find(p => p.type === 'King' && p.owner === selectedPiece.owner);
-        let distance = dist(selectedPiece.position.x, selectedPiece.position.y, king.position.x, king.position.y);
+    customSelects.forEach(select => {
+        const trigger = select.querySelector('.custom-select-trigger');
+        const options = select.querySelectorAll('.custom-option');
+        const triggerSpan = trigger.querySelector('span');
 
-        let newMissionProfile = {
-            pace: document.getElementById('pace').value,
-            roe: document.getElementById('roe').value
-        };
+        trigger.addEventListener('click', () => {
+            select.classList.toggle('open');
+        });
 
-        if (distance <= 2) { // Command Aura
-            selectedPiece.missionProfile = newMissionProfile;
-        } else {
-            let messenger = new Messenger(king.position, selectedPiece.id, newMissionProfile);
-            activeMessengers.push(messenger);
-        }
-    }
+        options.forEach(option => {
+            option.addEventListener('click', () => {
+                // Update the hidden select value
+                const hiddenSelectId = select.id.replace('-select', '');
+                const hiddenSelect = document.getElementById(hiddenSelectId);
+                if (hiddenSelect) {
+                    hiddenSelect.value = option.dataset.value;
+                }
+
+                // Update the trigger text
+                triggerSpan.textContent = option.textContent;
+                
+                // Update selected class
+                options.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+
+                // Close the dropdown
+                select.classList.remove('open');
+            });
+        });
+    });
+
+    // Close dropdowns when clicking outside
+    window.addEventListener('click', e => {
+        customSelects.forEach(select => {
+            if (!select.contains(e.target)) {
+                select.classList.remove('open');
+            }
+        });
+    });
 });

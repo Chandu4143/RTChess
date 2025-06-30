@@ -14,37 +14,110 @@
     <div class="ui-panel">
         <h3>Mission Control</h3>
         <div id="mission-profile-panel" style="display: none;">
-            <label for="pace">Pace:</label>
-            <select id="pace" name="pace">
-                <option value="CAUTIOUS">Cautious</option>
-                <option value="STANDARD">Standard</option>
-                <option value="FORCED_MARCH">Forced March</option>
-            </select>
+            <div class="selected-piece-info" id="selected-piece-info" style="display: none;">
+                <h4>Selected Unit</h4>
+                <div class="piece-stats">
+                    <span id="piece-type">-</span> | 
+                    <span id="piece-morale">Morale: 100%</span> | 
+                    <span id="piece-stamina">Stamina: 100%</span>
+                </div>
+            </div>
+            
+            <label for="pace">Movement Pace:</label>
+            <div class="custom-select-wrapper">
+                <div class="custom-select" id="pace-select">
+                    <div class="custom-select-trigger"><span>Standard - Normal Speed</span>
+                        <div class="arrow"></div>
+                    </div>
+                    <div class="custom-options">
+                        <div class="custom-option" data-value="CAUTIOUS">Cautious - Slow & Steady</div>
+                        <div class="custom-option selected" data-value="STANDARD">Standard - Normal Speed</div>
+                        <div class="custom-option" data-value="FORCED_MARCH">Forced March - Fast but Tiring</div>
+                    </div>
+                </div>
+            </div>
+            
             <label for="roe">Rules of Engagement:</label>
-            <select id="roe" name="roe">
-                <option value="ENGAGE_ON_SIGHT">Engage on Sight</option>
-                <option value="HOLD_FIRE">Hold Fire</option>
-                <option value="OPPORTUNISTIC">Opportunistic</option>
-            </select>
-            <button id="set-order">Set Order</button>
-            <hr>
+            <div class="custom-select-wrapper">
+                <div class="custom-select" id="roe-select">
+                    <div class="custom-select-trigger"><span>Engage on Sight - Attack All Enemies</span>
+                        <div class="arrow"></div>
+                    </div>
+                    <div class="custom-options">
+                        <div class="custom-option selected" data-value="ENGAGE_ON_SIGHT">Engage on Sight - Attack All Enemies</div>
+                        <div class="custom-option" data-value="HOLD_FIRE">Hold Fire - Defensive Only</div>
+                        <div class="custom-option" data-value="OPPORTUNISTIC">Opportunistic - Attack When Stronger</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="set-order">Issue Orders</button>
+            <div class="order-status" id="order-status"></div>
+        </div>
+        <div id="clairvoyance-readout" class="clairvoyance-readout" style="display: none;">
+            <h4>Enemy Unit Intel</h4>
+            <p id="clairvoyance-text"></p>
         </div>
         <button id="start-battle">START BATTLE</button>
     </div>
 
     <div class="ui-panel">
         <h3>Command Cards</h3>
-        <div id="card-hand"></div>
+        <div class="card-hand-container">
+            <div id="card-hand"></div>
+            <div class="card-help">
+                <small>Click a card, then click the target</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui-panel game-info">
+        <h3>Battle Status</h3>
+        <div class="status-grid">
+            <div class="status-item">
+                <label>Game Phase:</label>
+                <span id="game-phase">Main Menu</span>
+            </div>
+            <div class="status-item">
+                <label>Active Messengers:</label>
+                <span id="messenger-count">0</span>
+            </div>
+            <div class="status-item">
+                <label>Pieces Remaining:</label>
+                <span id="piece-count">White: 16 | Black: 16</span>
+            </div>
+        </div>
+        <div class="controls-help">
+            <h4>Quick Controls</h4>
+            <ul>
+                <li><strong>Planning:</strong> Click piece → Click target → Set orders</li>
+                <li><strong>Battle:</strong> Click King to move command center</li>
+                <li><strong>Cards:</strong> Click card → Click target to activate</li>
+            </ul>
+        </div>
     </div>
 
     <!-- Overlays -->
     <div id="main-menu">
         <h1>RTChess: The General's Gambit</h1>
+        <p>Real-time strategy meets chess tactics</p>
         <button id="start-game">Start New Game</button>
     </div>
+    
     <div id="game-over" style="display: none;">
         <h1 id="winner-message"></h1>
+        <p>The battle has concluded!</p>
         <button id="play-again">Play Again</button>
+    </div>
+
+    <div id="ghost-signal-notification" class="ghost-signal-notification" style="display: none;">
+        <p>Enemy communication intercepted: A messenger has been lost!</p>
+    </div>
+
+    <!-- Loading indicator -->
+    <div id="loading" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>Preparing battlefield...</p>
     </div>
 
     <!-- Scripts -->
@@ -52,6 +125,8 @@
     <script src="js/messenger.js"></script>
     <script src="js/cards.js"></script>
     <script src="js/player.js"></script>
+    <script src="js/ai.js"></script>
+    <script src="js/ui.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

@@ -15,10 +15,7 @@ const CARD_DEFINITIONS = {
         name: 'Clairvoyance',
         description: 'Reveals the mission profile of one enemy piece.',
         targetType: 'piece',
-        effect: (targetPiece) => {
-            // TODO: This will require a UI update to show the mission profile
-            console.log(targetPiece.missionProfile);
-        }
+        effect: (targetPiece) => {            const readoutPanel = document.getElementById('clairvoyance-readout');            const readoutText = document.getElementById('clairvoyance-text');            readoutText.textContent = `OBJECTIVE: ${targetPiece.missionProfile.objective.type}\n PACE: ${targetPiece.missionProfile.pace}\n ROE: ${targetPiece.missionProfile.roe}`;            readoutPanel.style.display = 'block';            setTimeout(() => {                readoutPanel.style.display = 'none';            }, 5000);        }
     },
     'rallying_cry': {
         name: 'Rallying Cry',
@@ -74,8 +71,12 @@ const CARD_DEFINITIONS = {
         description: 'Create a fake "messenger lost" notification for your opponent.',
         targetType: 'global',
         effect: () => {
-            // TODO: This will require a UI update to show the notification
-            console.log('Ghost signal sent!');
+            const notification = document.getElementById('ghost-signal-notification');
+            notification.style.display = 'block';
+
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 4000);
         }
     },
     'decoy': {
@@ -87,6 +88,33 @@ const CARD_DEFINITIONS = {
             boardState.push(decoy);
             setTimeout(() => {
                 boardState = boardState.filter(p => p.id !== 'decoy');
+            }, 10000);
+        }
+    }
+};
+
+const AI_CARD_DEFINITIONS = {
+    'sabotage': {
+        name: 'Sabotage',
+        description: 'Reduces a random enemy piece\'s stamina.',
+        targetType: 'global',
+        effect: () => {
+            const playerPieces = boardState.filter(p => p.owner === 'white');
+            if (playerPieces.length > 0) {
+                const randomPiece = playerPieces[Math.floor(Math.random() * playerPieces.length)];
+                randomPiece.stamina = Math.max(0, randomPiece.stamina - 50);
+            }
+        }
+    },
+    'counter_intelligence': {
+        name: 'Counter Intelligence',
+        description: 'Temporarily disables the player\'s ability to see piece stats.',
+        targetType: 'global',
+        effect: () => {
+            const infoPanel = document.getElementById('selected-piece-info');
+            infoPanel.style.display = 'none';
+            setTimeout(() => {
+                infoPanel.style.display = 'block';
             }, 10000);
         }
     }

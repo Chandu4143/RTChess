@@ -26,6 +26,7 @@ class Player {
             cardButton.addEventListener('click', () => {
                 selectedCard = cardId;
                 document.body.style.cursor = 'crosshair';
+                highlightSelectedCard(cardId);
             });
             handContainer.appendChild(cardButton);
         }

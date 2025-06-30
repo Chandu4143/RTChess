@@ -25,8 +25,32 @@ class Piece {
             case 'Rook': return 5;
             case 'Queen': return 9;
             case 'King': return 10;
+            case 'Decoy': return 0;
             default: return 0;
         }
+    }
+
+    getUnicodeSymbol() {
+        const symbols = {
+            'white': {
+                'Pawn': '♙',
+                'Rook': '♖',
+                'Knight': '♘',
+                'Bishop': '♗',
+                'Queen': '♕',
+                'King': '♔',
+                'Decoy': '⚑'
+            },
+            'black': {
+                'Pawn': '♟',
+                'Rook': '♜',
+                'Knight': '♞',
+                'Bishop': '♝',
+                'Queen': '♛',
+                'King': '♚'
+            }
+        };
+        return symbols[this.owner][this.type];
     }
 
     update() {
@@ -112,20 +136,48 @@ class Piece {
     }
 
     draw() {
+        let centerX = this.position.x * 100 + 50;
+        let centerY = this.position.y * 100 + 50;
+        
+        // Draw health/status ring
+        let healthColor = color(76, 175, 80); // Green for healthy
+        if (this.morale < 50) healthColor = color(255, 193, 7); // Yellow for low morale
+        if (this.morale < 25) healthColor = color(244, 67, 54); // Red for very low morale
+        
+        noFill();
+        stroke(healthColor);
+        strokeWeight(3);
+        let healthAngle = map(this.morale, 0, 100, 0, TWO_PI);
+        arc(centerX, centerY, 90, 90, -HALF_PI, -HALF_PI + healthAngle);
+        
+        // Draw stamina ring (inner)
+        let staminaColor = color(74, 144, 226);
+        stroke(staminaColor);
+        strokeWeight(2);
+        let staminaAngle = map(this.stamina, 0, 100, 0, TWO_PI);
+        arc(centerX, centerY, 75, 75, -HALF_PI, -HALF_PI + staminaAngle);
+        
+        noStroke();
+        
         // Draw the piece
-        if (this.owner === 'white') {
-            fill(255, 200, 200);
-        } else {
-            fill(100, 100, 100);
-        }
-        ellipse(this.position.x * 100 + 50, this.position.y * 100 + 50, 80, 80);
+        fill(this.owner === 'white' ? '#FFFFFF' : '#000000');
+        textSize(64);
+        textAlign(CENTER, CENTER);
+        text(this.getUnicodeSymbol(), centerX, centerY);
 
         // Draw a highlight if the piece is selected
         if (selectedPiece === this) {
             noFill();
-            stroke(0, 255, 0);
+            let pulseAlpha = 150 + 105 * sin(millis() * 0.01);
+            stroke(74, 144, 226, pulseAlpha);
             strokeWeight(4);
-            ellipse(this.position.x * 100 + 50, this.position.y * 100 + 50, 90, 90);
+            ellipse(centerX, centerY, 95, 95);
+            
+            // Additional outer glow
+            stroke(74, 144, 226, pulseAlpha * 0.3);
+            strokeWeight(2);
+            ellipse(centerX, centerY, 105, 105);
+            
             strokeWeight(1);
             noStroke();
         }
